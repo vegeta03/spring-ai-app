@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mine</groupId>
-    <artifactId>spring-ai</artifactId>
+    <artifactId>spring-ai-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-ai</name>
-    <description>spring-ai</description>
+    <description>spring-ai-application</description>
     <url/>
     <licenses>
         <license/>
