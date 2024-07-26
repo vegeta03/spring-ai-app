@@ -17,7 +17,7 @@ public class GroqAIServiceImpl implements GroqAIService {
 
     @Override
     public String getResponse(String query) {
-        ChatResponse response = chatModel.call(new Prompt("Generate the names of 5 famous pirates."));
-        return response.toString();
+        ChatResponse response = chatModel.call(new Prompt(query));
+        return response.getResult().getOutput().getContent();
     }
 }
