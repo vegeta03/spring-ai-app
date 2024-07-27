@@ -7,6 +7,9 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 @SpringBootTest
 class GroqAIServiceImplTest {
@@ -17,10 +20,13 @@ class GroqAIServiceImplTest {
 
     @Test
     void getResponse() {
-        String answer = groqAIService.getResponse("Write a python function to output numbers from 1 tp 100.");
+        Prompt prompt = new Prompt(new UserMessage("Write a python function to output numbers from 1 tp 100."));
+        Mono<String> answerMono = groqAIService.getResponse(prompt);
         System.out.println("############################Got the answer.############################");
-        System.out.println(answer);
-        System.out.println("#######################################################################");
+        answerMono
+                .doOnNext(System.out::println)
+                .block();
+        System.out.println("\n#####################################################################");
     }
 
     @Test
@@ -29,6 +35,7 @@ class GroqAIServiceImplTest {
         Flux<String> responseStream = groqAIService.getResponseStream(prompt);
         System.out.println("############################Got the answer.############################");
         responseStream
+                .delayElements(Duration.ofMillis(50))
                 .doOnNext(System.out::print)
                 .doOnComplete(() -> System.out.println("\n#######################################################################"))
                 .blockLast();

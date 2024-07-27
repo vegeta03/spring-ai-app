@@ -1,11 +1,11 @@
 package com.mine.springai.service.impl;
 
 import com.mine.springai.service.GroqAIService;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class GroqAIServiceImpl implements GroqAIService {
@@ -17,9 +17,14 @@ public class GroqAIServiceImpl implements GroqAIService {
     }
 
     @Override
-    public String getResponse(String query) {
-        ChatResponse response = chatModel.call(new Prompt(query));
-        return response.getResult().getOutput().getContent();
+    public Mono<String> getResponse(Prompt prompt) {
+        String response = chatModel
+                .call(prompt)
+                .getResult()
+                .getOutput()
+                .getContent();
+
+        return Mono.just(response);
     }
 
     @Override
